@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        .table {
+            width: 100%;
+            background-color: #fff;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th,
+        .table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .filterable {
+            margin-top: 15px;
+        }
+
+        .filterable .panel-heading .pull-right {
+            margin-top: -20px;
+        }
+
+        .filterable .filters input[disabled] {
+            background-color: transparent;
+            border: none;
+            cursor: auto;
+            box-shadow: none;
+            padding: 0;
+            height: auto;
+        }
+
+        .filterable .filters input[disabled]::-webkit-input-placeholder {
+            color: #333;
+        }
+
+        .filterable .filters input[disabled]::-moz-placeholder {
+            color: #333;
+        }
+
+        .filterable .filters input[disabled]:-ms-input-placeholder {
+            color: #333;
+        }
+    </style>
+
+    <br>
+    <h2>Listing of All SUB-Task</h2>
+    <hr><br>
+    <div class="container">
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr class="filters">
+                        <th>Filters: TaskID &nbsp;&nbsp;&nbsp;
+                            <select id="assigned-user-filter" class="form-control">
+                                <option>None Selected</option>
+                                <% const uniqueTaskIds=new Set(); %>
+                                    <% subtasks.forEach(taskGroup=> { %>
+                                        <% taskGroup.forEach(subtask=> { %>
+                                            <% if (subtask.task_id && !uniqueTaskIds.has(subtask.task_id)) { %>
+                                                <% uniqueTaskIds.add(subtask.task_id); %>
+                                                    <option>
+                                                        <%= subtask.task_id %>
+                                                    </option>
+                                                    <% } %>
+                                                        <% }); %>
+                                                            <% }); %>
+                            </select>
+                        </th>
+                    </tr>
+
+                </thead>
+            </table>
+
+
+            <div class="panel panel-primary filterable">
+                <div class="panel-heading">
+                    <h3 class="panel-title">SUBTasks</h3>
+                    <div class="pull-right"></div>
+                </div>
+
+                <table id="task-list-tbl" class="table">
+                    <thead>
+                        <tr>
+                            <th>TASK-Id</th>
+                            <th>SUBTASK-Id</th>
+                            <th>created_at</th>
+                            <th>Updated_at</th>
+                            <th>Deleted_at</th>
+
+                        </tr>
+                    </thead>
+
+
+                    <tbody id="task-list-tbody">
+                        <% subtasks.forEach(taskSubtasks=> { %>
+                            <% taskSubtasks.forEach(subtask=> { %>
+                                <tr data-task-id="<%= subtask.task_id %>">
+                                    <td>
+                                        <%= subtask.task_id %>
+                                    </td>
+                                    <td>
+                                        <%= subtask._id %>
+                                    </td>
+                                    <td>
+                                        <%= new Date(subtask.created_at).toLocaleDateString('en-US', { weekday: 'short'
+                                            , month: 'short' , day: '2-digit' , year: 'numeric' }) %>
+                                    </td>
+                                    <td>
+                                        <%= new Date(subtask.updated_at).toLocaleDateString('en-US', { weekday: 'short'
+                                            , month: 'short' , day: '2-digit' , year: 'numeric' }) %>
+                                    </td>
+                                    <td>
+                                        <%= new Date(subtask.deleted_at).toLocaleDateString('en-US', { weekday: 'short'
+                                            , month: 'short' , day: '2-digit' , year: 'numeric' }) %>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                                    <% }); %>
+                    </tbody>
+
+                </table>
+            </div>
+
+            <br />
+            <hr>
+            <div>
+                <h1>
+                    SELECT SUB-TASK TO UPDATE:
+                </h1>
+                <form action="/api/UpdateSubTasks" method="post">
+                    <table class="table">
+                        <thead>
+                            <tr class="filters">
+                                <th>Filters: Sub-TaskID &nbsp;&nbsp;&nbsp;
+                                    <select name="subId" style="margin-right: 30px;">
+                                        <option>None</option>
+                                        <% subtasks.forEach(subtaskArray=> { %>
+                                            <% subtaskArray.forEach(subtask=> { %>
+                                                <option value="<%= subtask._id %>">
+                                                    <%= subtask._id %>
+                                                </option>
+                                                <% }); %>
+                                                    <% }); %>
+                                    </select>
+                                    <button type="submit">Update</button>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js"
+        integrity="sha512-+k1pnlgt4F1H8L7t3z95o3/KO+o78INEcXTbnoJQ/F2VqDVhWoaiVml/OEHv9HsVgxUaVW+IbiZPUJQfF/YxZw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        const filterSelect = document.getElementById('assigned-user-filter');
+        const taskListTbody = document.getElementById('task-list-tbody');
+
+        filterSelect.addEventListener('change', (event) => {
+            const selectedTaskId = event.target.value;
+
+            // Show all rows if "None" is selected
+            if (selectedTaskId === 'None') {
+                taskListTbody.querySelectorAll('tr').forEach(row => row.style.display = '');
+                return;
+            }
+
+            // Filter rows based on selected task ID
+            taskListTbody.querySelectorAll('tr').forEach(row => {
+                row.style.display = row.dataset.taskId === selectedTaskId ? '' : 'none';
+            });
+        });
+    </script>
+    <!-- <script>
+        var filters = {
+            title: null,
+            description: null,
+            due_date: null,
+            user: null, // Add user filter
+            status: null,
+            milestone: null,
+            priority: null,
+            tags: null
+        };
+
+        function updateFilters() {
+            $('.task-list-row').hide().filter(function () {
+                var
+                    self = $(this),
+                    result = true; // not guilty until proven guilty
+
+                Object.keys(filters).forEach(function (filter) {
+                    if (filters[filter] && (filters[filter] != 'None') && (filters[filter] != 'Any')) {
+                        result = result && filters[filter] === self.data(filter);
+                    }
+                });
+
+                return result;
+            }).show();
+        }
+
+        function changeFilter(filterName) {
+            filters[filterName] = this.value;
+            updateFilters();
+        }
+
+        // Assigned User Dropdown Filter
+        $('#assigned-user-filter').on('change', function () {
+            changeFilter.call(this, 'user');
+        });
+
+        // Task Status Dropdown Filter
+        $('#status-filter').on('change', function () {
+            changeFilter.call(this, 'status');
+        });
+
+        // Task Milestone Dropdown Filter
+        $('#milestone-filter').on('change', function () {
+            changeFilter.call(this, 'milestone');
+        });
+
+        // Task Priority Dropdown Filter
+        $('#priority-filter').on('change', function () {
+            changeFilter.call(this, 'priority');
+        });
+
+        // Task Tags Dropdown Filter
+        $('#tags-filter').on('change', function () {
+            changeFilter.call(this, 'tags');
+        });
+
+        // Future use for a text input filter
+        $('#search').on('click', function () {
+            $('.box').hide().filter(function () {
+                return $(this).data('order-number') == $('#search-criteria').val().trim();
+            }).show();
+        });
+    </script> -->
+
+</body>
+
+</html>

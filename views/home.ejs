@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <h1>hello, <%= username %>
+        </h1>
+
+        <p style="margin-left: 30px;"><span>JWT Token (dont share)</span> <input type="text" value="<%= token %>"
+                style="width: 40%;"></p>
+
+        <br /><br />
+        <button onclick="newtask()"> CREATE NEW TASK </button>
+        <br /><br />
+        <button onclick="subtask()"> CREATE SUB TASK </button>
+        <br /><br />
+
+        <button onclick="logout()">Logout</button>
+
+
+    </div>
+
+
+
+
+    <script>
+        function logout() {
+            localStorage.removeItem('jwtToken'); // Assuming 'jwtToken' is the key used to store the JWT token
+            // Redirect the user to the logout page or any other page as needed
+            window.location.href = '/logout';
+
+        };
+
+
+
+        function newtask() { window.location.href = '/api/tasks'; };
+        function subtask() { window.location.href = '/api/subtasks'; };
+        function getall() { window.location.href = '/api/GetALLtasks'; };
+
+    </script>
+
+
+
+
+    <hr>
+
+
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        .table {
+            width: 100%;
+            background-color: #fff;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th,
+        .table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .filterable {
+            margin-top: 15px;
+        }
+
+        .filterable .panel-heading .pull-right {
+            margin-top: -20px;
+        }
+
+        .filterable .filters input[disabled] {
+            background-color: transparent;
+            border: none;
+            cursor: auto;
+            box-shadow: none;
+            padding: 0;
+            height: auto;
+        }
+
+        .filterable .filters input[disabled]::-webkit-input-placeholder {
+            color: #333;
+        }
+
+        .filterable .filters input[disabled]::-moz-placeholder {
+            color: #333;
+        }
+
+        .filterable .filters input[disabled]:-ms-input-placeholder {
+            color: #333;
+        }
+    </style>
+
+    <br>
+    <h2>Listing of All Task</h2>
+    <hr><br>
+
+
+    <div class="container">
+        <div class="row">
+            <!-- <table class="table">
+                    <thead>
+                        <tr class="filters">
+                            <th>Assigned User
+                                <select id="assigned-user-filter" class="form-control">
+                                    <option>None</option>
+                                    <option>John</option>
+                                    <option>Rob</option>
+                                    <option>Larry</option>
+                                    <option>Donald</option>
+                                    <option>Roger</option>
+                                </select>
+                            </th>
+                            <th>Status
+                                <select id="status-filter" class="form-control">
+                                    <option>Any</option>
+                                    <option>Not Started</option>
+                                    <option>In Progress</option>
+                                    <option>Completed</option>
+                                </select>
+                            </th>
+                            <th>Milestone
+                                <select id="milestone-filter" class="form-control">
+                                    <option>None</option>
+                                    <option>Milestone 1</option>
+                                    <option>Milestone 2</option>
+                                    <option>Milestone 3</option>
+                                </select>
+                            </th>
+                            <th>Priority
+                                <select id="priority-filter" class="form-control">
+                                    <option>Any</option>
+                                    <option>Low</option>
+                                    <option>Medium</option>
+                                    <option>High</option>
+                                    <option>Urgent</option>
+                                </select>
+                            </th>
+                            <th>Tags
+                                <select id="tags-filter" class="form-control">
+                                    <option>None</option>
+                                    <option>Tag 1</option>
+                                    <option>Tag 2</option>
+                                    <option>Tag 3</option>
+                                </select>
+                            </th>
+                        </tr>
+                    </thead>
+                </table> -->
+
+
+            <div class="panel panel-primary filterable">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Tasks</h3>
+                    <div class="pull-right"></div>
+                </div>
+
+                <table id="task-list-tbl" class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>description</th>
+                            <th>Status</th>
+                            <th>Due Date</th>
+
+                        </tr>
+                    </thead>
+
+                    <!-- <tbody>
+    
+                            <tr id="task-1" class="task-list-row" data-task-id="1" data-user="Larry"
+                                data-status="In Progress" data-milestone="Milestone 2" data-priority="Urgent"
+                                data-tags="Tag 2">
+                                <td>Task title 1</td>
+                                <td>01/24/2015</td>
+                                <td>09/24/2015</td>
+                                <td>Urgent</td>
+                                <td>Milestone 2</td>
+                                <td>Larry</td>
+                                <td>Tag 2</td>
+                            </tr>
+    
+                            <tr id="task-2" class="task-list-row" data-task-id="2" data-user="Larry"
+                                data-status="Not Started" data-milestone="Milestone 2" data-priority="Low"
+                                data-tags="Tag 1">
+                                <td>Task title 2</td>
+                                <td>03/14/2015</td>
+                                <td>09/18/2015</td>
+                                <td>Low</td>
+                                <td>Milestone 2</td>
+                                <td>Larry</td>
+                                <td>Tag 1</td>
+                            </tr>
+    
+                            <tr id="task-3" class="task-list-row" data-task-id="3" data-user="Donald"
+                                data-status="Not Started" data-milestone="Milestone 1" data-priority="Low"
+                                data-tags="Tag 3">
+                                <td>Task title 3</td>
+                                <td>11/16/2014</td>
+                                <td>02/29/2015</td>
+                                <td>Low</td>
+                                <td>Milestone 1</td>
+                                <td>Donald</td>
+                                <td>Tag 3</td>
+                            </tr>
+    
+    
+                            <tr id="task-4" class="task-list-row" data-task-id="4" data-user="Donald"
+                                data-status="Completed" data-milestone="Milestone 1" data-priority="High" data-tags="Tag 1">
+                                <td>Task title 4</td>
+                                <td>11/16/2014</td>
+                                <td>02/29/2015</td>
+                                <td>High</td>
+                                <td>Milestone 1</td>
+                                <td>Donald</td>
+                                <td>Tag 1</td>
+                            </tr>
+                        </tbody> -->
+
+                    <tbody id="task-4" class="task-list-row" data-task-id="4" data-user="Donald" data-status="Completed"
+                        data-milestone="Milestone 1" data-priority="High" data-tags="Tag 1">
+                        <% tasks.forEach(task=> { %>
+                            <tr>
+                                <td>
+                                    <%= task._id %>
+                                </td>
+                                <td>
+                                    <%= task.title %>
+                                </td>
+                                <td>
+                                    <%= task.description %>
+                                </td>
+                                <td>
+                                    <%= task.status %>
+                                </td>
+                                <td>
+                                    <%= task.due_date %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+
+
+                <hr>
+
+
+                <div>
+                    <h1>
+                        VIEW SUBTASKS:
+                    </h1>
+                    <form action="/api/GetAllSubTasks" method="post" style="margin-left: 150px;">
+                        <!-- <input type="text" id="taskID1" name="taskID1" placeholder="taskID" value="65be41f649d7d8cf8ed20e4a" required> -->
+                        <button type="submit">VIEW ALL SUBTASK</button>
+                    </form>
+                </div>
+
+                <hr>
+
+                <div>
+                    <h1>
+                        SELECT TASK TO UPDATE:
+                    </h1>
+                    <form action="/api/UpdateTasks" method="post">
+                        <table class="table">
+                            <thead>
+                                <tr class="filters">
+                                    <th>Filters: TaskID &nbsp;&nbsp;&nbsp;
+                                        <select name="taskId" style="margin-right: 30px;">
+                                            <option>None</option>
+                                            <% const uniqueIds=new Set(); %>
+                                                <% tasks.forEach(task=> { %>
+                                                    <% if (!uniqueIds.has(task._id)) { %>
+                                                        <% uniqueIds.add(task._id); %>
+                                                            <option value="<%= task._id %>">
+                                                                <%= task._id %>
+                                                            </option>
+                                                            <% } %>
+                                                                <% }); %>
+                                        </select>
+                                        <button type="submit">Update</button>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </form>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+
+
+
+
+
+<!-- eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InByYXlhZzc3IiwiaWF0IjoxNzA2ODY5NzQ2fQ.OJdsnI2pnZzGcHSR9sNJwJn7qzmEMRnpUBpLJRKcI3k -->
+<!-- eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InByYXlhZzc3IiwiaWF0IjoxNzA2ODY5OTk0fQ.1be-UL2dw9OYQcJrXoX9PmtktYo39JTFvDZEAbza3FU -->
+<!-- eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InByYXlhZzc3IiwiaWF0IjoxNzA2ODc2Mjg0LCJleHAiOjE3MDY4Nzk4ODR9.ypbqBAMpqoZDMWCwiKpTNg98PSFo__0liNHK_sCqO1U -->
+
+
+
+<!-- eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InByYXlhZzc3IiwiaWF0IjoxNzA2ODc2ODY2LCJleHAiOjE3MDY4ODA0NjZ9.cK5Eo6DRXV6YPzBbBGurlW15aNKwcIScodiAdL5jGTw -->
+<!-- eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InByYXlhZzc3IiwiaWF0IjoxNzA2ODc2Mjg0LCJleHAiOjE3MDY4Nzk4ODR9.ypbqBAMpqoZDMWCwiKpTNg98PSFo__0liNHK_sCqO1U -->
+
+
+
+<!-- eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InByYXlhZzc3IiwiaWF0IjoxNzA2ODc3MzcxLCJleHAiOjE3MDY4ODA5NzF9.0xDhIcu8j8pZkSuSKExjPBAFLrgvYNark_VuZZJVC1U-->
+
+
+</html>

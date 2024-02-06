@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload and Detection</title>
+</head>
+
+<body>
+    <style>
+        body {
+            font-family: "Comic Sans MS", cursive;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #fafafa;
+            /* Warna latar belakang abu-abu muda */
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .card {
+            width: 100%;
+            background-color: #f8f8f8;
+            /* Warna card */
+            padding: 20px;
+            border-radius: 12px;
+            /* Border radius card */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input {
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 2px solid #ddd;
+            /* Border color input */
+            border-radius: 8px;
+            /* Border radius input */
+            transition: border-color 0.3s ease-in-out;
+            outline: none;
+            color: #333;
+            background-color: #f4f4f4;
+            /* Warna input */
+        }
+
+        input:focus {
+            border-color: #ff9900;
+            /* Warna input saat focus */
+        }
+
+        button {
+            background-color: #ff9900;
+            /* Warna button */
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            /* Border radius button */
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #ff6600;
+            /* Warna button saat hover */
+        }
+    </style>
+
+    <div class="container">
+        <div class="card">
+            <!-- <h2>UPDATE TASK <span> -->
+            <!-- <%= tasks.id %> -->
+            </span></h2>
+            <form action="/api/UpdateTaskstoMongoDB?id=<%= tasks.id %>" method="post">
+
+                <h2>TITLE: <span>
+                        <%= tasks.title %>
+                    </span></h2>
+                <!-- <div onclick="alert('Field is disabled');" style="cursor: not-allowed;"> -->
+                <!-- <input type="text" id="title" name="title" placeholder="title" onclick="pp()" disabled> -->
+                <!-- <input type="text" id="description" name="description" placeholder="description" disabled> -->
+                <!-- </div> -->
+
+
+                <input type="text" id="status" name="status" placeholder="status" value="<%= tasks.status %>" required>
+
+                <label for="dele_date">Due Date</label>
+                <input type="date" id="due_date" name="due_date" placeholder="due_date" value="<%= tasks.due_date %>"
+                    required>
+
+
+
+                <button type="submit">Upload Image</button>
+            </form>
+
+            <script>
+                function pp() {
+                    alert("Please enter");
+                }
+
+                // document.getElementById("title").value = '<%= tasks.title %>';
+                // document.getElementById("description").value = '<%= tasks.description %>';
+                // document.getElementById("status").value = '<%= tasks.status %>';
+            </script>
+        </div>
+    </div>
+</body>
+
+</html>

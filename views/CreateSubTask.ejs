@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload and Detection</title>
+</head>
+
+<body>
+    <style>
+        body {
+            font-family: "Comic Sans MS", cursive;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #fafafa;
+            /* Warna latar belakang abu-abu muda */
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .card {
+            width: 100%;
+            background-color: #f8f8f8;
+            /* Warna card */
+            padding: 20px;
+            border-radius: 12px;
+            /* Border radius card */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input {
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 2px solid #ddd;
+            /* Border color input */
+            border-radius: 8px;
+            /* Border radius input */
+            transition: border-color 0.3s ease-in-out;
+            outline: none;
+            color: #333;
+            background-color: #f4f4f4;
+            /* Warna input */
+        }
+
+        input:focus {
+            border-color: #ff9900;
+            /* Warna input saat focus */
+        }
+
+        button {
+            background-color: #ff9900;
+            /* Warna button */
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            /* Border radius button */
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #ff6600;
+            /* Warna button saat hover */
+        }
+    </style>
+
+    <div class="container">
+        <div class="card">
+            <h2>CREAT NEW TASK</h2>
+            <form action="/api/subtasks" method="post">
+                <input type="text" id="task_id" name="task_id" placeholder="task id" required>
+
+                <label for="status">Choose Status:</label>
+                <select name="status1" id="status">
+                    <!-- <option value="None">None</option> -->
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                </select>
+                <br />
+
+                <label for="dele_date">Delete Date:</label>
+                <input type="date" id="dele_date" name="dele_date" placeholder="dele_date" required>
+
+                <button type="submit">Upload Image</button>
+            </form>
+
+            <script>
+                document.getElementById("task_id").value = "65bf61cd26495535b85bcad1";
+                // document.getElementById("status").value = "02-03-2024";;
+            </script>
+        </div>
+    </div>
+</body>
+
+</html>
